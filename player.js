@@ -22,7 +22,12 @@ function draw_player() {
 function player_keys() {
     let dy = 0;
     let dx = 0;
-    const speed = 1;
+
+    let speed = 1;
+    if (keyIsDown(SHIFT)) {
+        speed = 2;
+    }
+
     if (keyIsDown(UP_ARROW)) {
         dy = -speed;
     } else if (keyIsDown(DOWN_ARROW)) {
@@ -40,7 +45,7 @@ function player_keys() {
     const current_cell = maze[cell_y][cell_x];
 
     if (dx < 0) {
-        const new_x = player.x + dx * player_width * 0.5;
+        const new_x = player.x + dx - player_width * 0.5;
         const new_cell_x = Math.floor(new_x / cell_size);
         if (new_cell_x >= 0) {
             if (new_cell_x !== cell_x) {
@@ -54,7 +59,7 @@ function player_keys() {
         }
     }
     else if (dx > 0) {
-        const new_x = player.x + dx * player_width * 0.5;
+        const new_x = player.x + dx + player_width * 0.5;
         const new_cell_x = Math.floor(new_x / cell_size);
         if (new_cell_x < cols) {
             if (new_cell_x !== cell_x) {
@@ -69,7 +74,7 @@ function player_keys() {
     }
 
     if (dy < 0) {
-        const new_y = player.y + dy * player_height * 0.6;
+        const new_y = player.y + dy - player_height * 0.6;
         const new_cell_y = Math.floor(new_y / cell_size);
         if (new_cell_y >= 0) {
             if (new_cell_y !== cell_y) {
@@ -83,7 +88,7 @@ function player_keys() {
         }
     }
     else if (dy > 0) {
-        const new_y = player.y + dy * player_height * 0.4;
+        const new_y = player.y + dy + player_height * 0.4;
         const new_cell_y = Math.floor(new_y / cell_size);
         if (new_cell_y < rows) {
             if (new_cell_y !== cell_y) {
