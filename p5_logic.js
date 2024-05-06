@@ -33,5 +33,6 @@ function draw() {
     background(0);
     stroke(255)
     draw_maze()
+    draw_player()
 }
 
