@@ -1,3 +1,10 @@
+
+// maze constants
+const rows = 40;
+const cols = 40;
+const cell_size = h / cols;
+let maze = null;
+
 class Cell {
     constructor(x, y) {
         this.x = x;
@@ -8,36 +15,35 @@ class Cell {
         this.isEnd = false;     // Flag to identify the end cell
     }
 
-    draw(context, size) {
+    draw(size) {
         const x = this.x * size;
         const y = this.y * size;
         if (this.isStart) {
-            context.fillStyle = 'green'; // Start cell color
+            fill(200, 220, 200); // green
+            stroke(200, 220, 200);
         } else if (this.isEnd) {
-            context.fillStyle = 'red'; // End cell color
+            fill(220, 200, 200); // red
+            stroke(220, 200, 200);
         } else {
-            context.fillStyle = 'white';
+            fill(200, 200, 200); // normal
+            stroke(200, 200, 200);
         }
-        context.fillRect(x, y, size, size);
-        context.strokeStyle = 'black';
-        context.beginPath();
+        rect(x + size / 2, y + size / 2, size, size);
+
+        stroke(0,0,0)
+        fill(0,0,0)
         if (this.walls.top) {
-            context.moveTo(x, y);
-            context.lineTo(x + size, y);
+            line(x, y, x + size, y);
         }
         if (this.walls.right) {
-            context.moveTo(x + size, y);
-            context.lineTo(x + size, y + size);
+            line(x + size, y, x + size, y + size);
         }
         if (this.walls.bottom) {
-            context.moveTo(x + size, y + size);
-            context.lineTo(x, y + size);
+            line(x + size, y + size, x, y + size);
         }
         if (this.walls.left) {
-            context.moveTo(x, y + size);
-            context.lineTo(x, y);
+            line(x, y + size, x, y);
         }
-        context.stroke();
     }
 
     checkNeighbors(grid, rows, cols) {
@@ -61,9 +67,10 @@ class Cell {
     }
 }
 
-function generateMaze(rows, cols, cellSize) {
-    let canvas = document.getElementById('mazeCanvas');
-    let context = canvas.getContext('2d');
+function generate_maze() {
+    if (maze)
+        return;
+
     let grid = [];
     for (let y = 0; y < rows; y++) {
         grid[y] = [];
@@ -92,14 +99,16 @@ function generateMaze(rows, cols, cellSize) {
 
     grid[0][0].isStart = true; // Marking the start cell
     grid[rows - 1][cols - 1].isEnd = true; // Marking the end cell
+    maze = grid;
+}
 
-    // Drawing the maze after it's fully generated
-    context.clearRect(0, 0, canvas.width, canvas.height);
+
+function draw_maze() {
+    if (!maze)
+        return;
     for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
-            grid[y][x].draw(context, cellSize);
+            maze[y][x].draw(cell_size);
         }
     }
 }
-
-generateMaze(40, 40, 20); // Adjust grid size and cell size as needed
