@@ -47,6 +47,24 @@ function draw_robots() {
 // move the bad guys
 function move_robots() {
     for (let robot of robots) {
-        image(robot_svg, robot.x, robot.y, robot_width, robot_height)
+
+        let dx = 0;
+        let dy = 0;
+        if (robot.direction === "up") {
+            dy = -1;
+        } else if (robot.direction === "down") {
+            dy = 1;
+        } else if (robot.direction === "left") {
+            dx = -1;
+        } else if (robot.direction === "right") {
+            dx = 1;
+        }
+
+        let cell_x = Math.floor(robot.x / cell_size);
+        let cell_y = Math.floor(robot.y / cell_size);
+        const current_cell = maze[cell_y][cell_x];
+
+        
+
     }
 }
