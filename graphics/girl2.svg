@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 400" width="200" height="400">
+  <!-- Head -->
+  <circle cx="100" cy="60" r="30" fill="#FFD4C4" />
+  <!-- Hair -->
+  <path d="M100 30 Q70 20, 70 60 Q70 90, 100 80 Q130 90, 130 60 Q130 20, 100 30" fill="#F0C419" />
+  <path d="M70 60 Q60 100, 100 90 Q140 100, 130 60" fill="#F0C419" />
+  <!-- Eyes -->
+  <circle cx="90" cy="60" r="5" fill="#000" />
+  <circle cx="110" cy="60" r="5" fill="#000" />
+  <!-- Smile -->
+  <path d="M85 75 Q100 85, 115 75" stroke="#000" stroke-width="2" fill="transparent" />
+  <!-- Dress -->
+  <path d="M70 90 Q50 140, 70 190 Q90 240, 100 280 Q110 240, 130 190 Q150 140, 130 90 Z" fill="#FF99AC" />
+  <path d="M70 190 Q100 160, 130 190 Q100 220, 70 190" fill="#DE3163" />
+  <!-- Details on dress -->
+  <circle cx="100" cy="160" r="3" fill="#FFF" />
+  <circle cx="90" cy="180" r="3" fill="#FFF" />
+  <circle cx="110" cy="180" r="3" fill="#FFF" />
+  <circle cx="100" cy="200" r="3" fill="#FFF" />
+  <!-- Legs in Walking Position 1 -->
+  <line x1="100" y1="280" x2="80" y2="350" stroke="#FFD4C4" stroke-width="8" />
+  <line x1="100" y1="280" x2="120" y2="330" stroke="#FFD4C4" stroke-width="8" />
+  <!-- Shoes -->
+  <circle cx="80" cy="350" r="10" fill="#222" />
+  <circle cx="120" cy="330" r="10" fill="#222" />
+</svg>
