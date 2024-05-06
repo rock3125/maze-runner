@@ -1,7 +1,7 @@
 
 // 1080p resolution
-const w = 600;
-const h = 600;
+const w = 1024;
+const h = 1024;
 let game_state = "game over"; // one of {game over, running, won}
 
 // graphics
