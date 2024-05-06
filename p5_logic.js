@@ -1,7 +1,8 @@
 
 // 1080p resolution
-const w = 800;
+const w = 600;
 const h = 600;
+let game_state = "game over"; // one of {game over, running, won}
 
 // graphics
 let girl_svg = []
@@ -25,6 +26,7 @@ function setup() {
     rectMode(CENTER);
     angleMode(DEGREES);
     frameRate(30);
+    reset_player();
     maze = null;
     generate_maze();
 }
@@ -38,6 +40,40 @@ function draw() {
     draw_maze()
     draw_player()
 
-    player_keys()
+    if (game_state !== "running" && keyIsDown(ENTER)) {
+        maze = null;
+        generate_maze();
+        reset_player();
+        game_state = "running";
+    }
+
+    if (game_state === "running" && keyIsDown(ESCAPE)) {
+        game_state = "game over";
+    }
+
+    if (game_state === "running") {
+        player_keys()
+    } else {
+
+        stroke(255)
+        fill(255)
+        textSize(20)
+        text("Rock's Maze Runner v1.0", (w / 2) - 180, (h / 2) - 100)
+
+        textSize(30)
+        if (game_state === "won") {
+            text("CONGRATULATIONS", (w / 2) - 210, (h / 2) - 200)
+            text("you made it", (w / 2) - 150, (h / 2) - 160)
+
+        } else {
+            text("G A M E   O V E R", (w / 2) - 200, (h / 2) - 200)
+        }
+
+        textSize(20)
+        text("press [enter] to start", (w / 2) - 160, h / 2 - 60)
+        text("use cursor keys to move", (w / 2) - 180, (h / 2) - 30)
+        text("press [m] to stop music", (w / 2) - 172, (h / 2))
+    }
+
 }
 
