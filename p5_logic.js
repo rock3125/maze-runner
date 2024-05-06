@@ -19,6 +19,10 @@ let explosion_svg = null;
 let robot_svg = null;
 let game_counter = 0;
 
+function get_random_int(max) {
+    return Math.floor(Math.random() * max);
+}
+
 // p5.js callback: load all graphics and set up
 function preload(){
     robot_svg = loadImage("./graphics/robot.svg");
@@ -38,6 +42,7 @@ function setup() {
     reset_player();
     maze = null;
     generate_maze();
+    reset_robots();
 }
 
 // p5 js callback - draw the world
@@ -48,11 +53,13 @@ function draw() {
     stroke(255)
     draw_maze()
     draw_player()
+    draw_robots()
 
     if (game_state !== "running" && keyIsDown(ENTER)) {
         maze = null;
         generate_maze();
         reset_player();
+        reset_robots();
         game_state = "running";
     }
 
