@@ -2,6 +2,7 @@
 // maze constants
 const rows = 10;
 const cols = 10;
+const maze_color = 140;
 const cell_size = h / cols;
 let maze = null;
 
@@ -19,14 +20,14 @@ class Cell {
         const x = this.x * size;
         const y = this.y * size;
         if (this.isStart) {
-            fill(200, 220, 200); // green
-            stroke(200, 220, 200);
+            fill(maze_color, maze_color + 20, maze_color); // green
+            stroke(maze_color, maze_color + 20, maze_color);
         } else if (this.isEnd) {
-            fill(220, 200, 200); // red
-            stroke(220, 200, 200);
+            fill(maze_color + 20, maze_color, maze_color); // red
+            stroke(maze_color + 20, maze_color, maze_color);
         } else {
-            fill(200, 200, 200); // normal
-            stroke(200, 200, 200);
+            fill(maze_color, maze_color, maze_color); // normal
+            stroke(maze_color, maze_color, maze_color);
         }
         rect(x + size / 2, y + size / 2, size, size);
 

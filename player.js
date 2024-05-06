@@ -83,7 +83,7 @@ function player_keys() {
         }
     }
     else if (dy > 0) {
-        const new_y = player.y + dy * player_height * 0.6;
+        const new_y = player.y + dy * player_height * 0.4;
         const new_cell_y = Math.floor(new_y / cell_size);
         if (new_cell_y < rows) {
             if (new_cell_y !== cell_y) {
