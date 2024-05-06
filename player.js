@@ -22,16 +22,17 @@ function draw_player() {
 function player_keys() {
     let dy = 0;
     let dx = 0;
+    const speed = 1;
     if (keyIsDown(UP_ARROW)) {
-        dy = -1;
+        dy = -speed;
     } else if (keyIsDown(DOWN_ARROW)) {
-        dy = 1;
+        dy = speed;
     }
 
     if (keyIsDown(LEFT_ARROW)) {
-        dx = -1;
+        dx = -speed;
     } else if (keyIsDown(RIGHT_ARROW)) {
-        dx = 1;
+        dx = speed;
     }
 
     let cell_x = Math.floor(player.x / cell_size);
@@ -102,6 +103,14 @@ function player_keys() {
         }
     } else {
         player.animation = 0;
+    }
+
+    const target_box_x = (cols - 1) * cell_size + (cell_size * 0.5);
+    const target_box_y = (rows - 1) * cell_size + (cell_size * 0.5);
+    const target_delta_x = Math.abs(player.x - target_box_x);
+    const target_delta_y = Math.abs(player.y - target_box_y);
+    if (target_delta_x < 10 && target_delta_y < 30) {
+        game_state = "won";
     }
 
 }

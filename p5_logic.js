@@ -72,7 +72,6 @@ function draw() {
         textSize(20)
         text("press [enter] to start", (w / 2) - 160, h / 2 - 60)
         text("use cursor keys to move", (w / 2) - 180, (h / 2) - 30)
-        text("press [m] to stop music", (w / 2) - 172, (h / 2))
     }
 
 }
