@@ -1,7 +1,7 @@
 
 // 1080p resolution
-const w = 1920;
-const h = 1080;
+const w = 800;
+const h = 600;
 
 // graphics
 let girl_svg = []
@@ -34,5 +34,7 @@ function draw() {
     stroke(255)
     draw_maze()
     draw_player()
+
+    player_keys()
 }
 
