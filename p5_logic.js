@@ -7,6 +7,7 @@ const h = 600;
 let girl_svg = []
 let explosion_svg = null;
 let robot_svg = null;
+let game_counter = 0;
 
 // p5.js callback: load all graphics and set up
 function preload(){
@@ -30,6 +31,8 @@ function setup() {
 
 // p5 js callback - draw the world
 function draw() {
+    game_counter += 1;
+
     background(0);
     stroke(255)
     draw_maze()

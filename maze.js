@@ -1,7 +1,7 @@
 
 // maze constants
-const rows = 40;
-const cols = 40;
+const rows = 10;
+const cols = 10;
 const cell_size = h / cols;
 let maze = null;
 

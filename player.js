@@ -12,7 +12,7 @@ let player = {
 
 function draw_player() {
     if (girl_svg) {
-        image(girl_svg[0], player.x, player.y, player_width, player_height)
+        image(girl_svg[player.animation], player.x, player.y, player_width, player_height)
     }
 }
 
@@ -91,6 +91,14 @@ function player_keys() {
                 player.y += dy;
             }
         }
+    }
+
+    if (dx !== 0 || dy !== 0) {
+        if (game_counter % 3 === 0) {
+            player.animation = (player.animation + 1) % girl_svg.length;
+        }
+    } else {
+        player.animation = 0;
     }
 
 }
