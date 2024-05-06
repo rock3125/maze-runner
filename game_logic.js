@@ -14,11 +14,13 @@ function move_if_possible(x, y, dx, dy, half_width, height_up, height_down) {
 
     let cell_x = Math.floor(x / cell_size);
     let cell_y = Math.floor(y / cell_size);
+    let new_cell_x = cell_x;
+    let new_cell_y = cell_y;
     const current_cell = maze[cell_y][cell_x];
 
     if (dx < 0) {
         const new_x = x + dx - half_width;
-        const new_cell_x = Math.floor(new_x / cell_size);
+        new_cell_x = Math.floor(new_x / cell_size);
         if (new_cell_x >= 0) {
             if (new_cell_x !== cell_x) {
                 const left_cell = maze[cell_y][new_cell_x];
@@ -31,7 +33,7 @@ function move_if_possible(x, y, dx, dy, half_width, height_up, height_down) {
         }
     } else if (dx > 0) {
         const new_x = x + dx + half_width;
-        const new_cell_x = Math.floor(new_x / cell_size);
+        new_cell_x = Math.floor(new_x / cell_size);
         if (new_cell_x < cols) {
             if (new_cell_x !== cell_x) {
                 const right_cell = maze[cell_y][new_cell_x];
@@ -46,7 +48,7 @@ function move_if_possible(x, y, dx, dy, half_width, height_up, height_down) {
 
     if (dy < 0) {
         const new_y = y + dy - height_up;
-        const new_cell_y = Math.floor(new_y / cell_size);
+        new_cell_y = Math.floor(new_y / cell_size);
         if (new_cell_y >= 0) {
             if (new_cell_y !== cell_y) {
                 const top_cell = maze[new_cell_y][cell_x];
@@ -59,7 +61,7 @@ function move_if_possible(x, y, dx, dy, half_width, height_up, height_down) {
         }
     } else if (dy > 0) {
         const new_y = y + dy + height_down;
-        const new_cell_y = Math.floor(new_y / cell_size);
+        new_cell_y = Math.floor(new_y / cell_size);
         if (new_cell_y < rows) {
             if (new_cell_y !== cell_y) {
                 const bottom_cell = maze[new_cell_y][cell_x];
@@ -72,5 +74,5 @@ function move_if_possible(x, y, dx, dy, half_width, height_up, height_down) {
         }
     }
 
-    return {x: x, y: y}
+    return {x: x, y: y, new_cell_x: new_cell_x, new_cell_y: new_cell_y}
 }
