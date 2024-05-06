@@ -69,6 +69,8 @@ function draw() {
 
     if (game_state === "running") {
         player_keys()
+        move_robots()
+
     } else {
 
         stroke(255)

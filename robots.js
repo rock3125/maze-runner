@@ -43,6 +43,14 @@ function draw_robots() {
     }
 }
 
+// is a direction viable? i.e. we haven't tried it before
+function is_viable(robot, cell_x, cell_y, direction) {
+    for (const de of robot.dead_end) {
+        if (de.cell_x === cell_x && de.cell_y === cell_y && de.direction === direction)
+            return false
+    }
+    return true
+}
 
 // move the bad guys
 function move_robots() {
@@ -62,9 +70,28 @@ function move_robots() {
 
         let cell_x = Math.floor(robot.x / cell_size);
         let cell_y = Math.floor(robot.y / cell_size);
-        const current_cell = maze[cell_y][cell_x];
 
-        
+        const new_xy = move_if_possible(robot.x, robot.y, dx, dy,
+            robot_width * 0.5, robot_height * 0.5, robot_height * 0.5)
+
+        // couldn't move?
+        if (robot.x === new_xy.x && robot.y === new_xy.y) {
+            robot.dead_end.push({cell_x: cell_x, cell_y: cell_y, direction: robot.direction});
+            // pick a new direction
+            if (is_viable(robot, cell_x, cell_y, "left")) {
+                robot.direction = "left";
+            } else if (is_viable(robot, cell_x, cell_y, "right")) {
+                robot.direction = "right";
+            } else if (is_viable(robot, cell_x, cell_y, "up")) {
+                robot.direction = "up";
+            } else if (is_viable(robot, cell_x, cell_y, "down")) {
+                robot.direction = "down";
+            }
+        }
+
+        robot.x = new_xy.x;
+        robot.y = new_xy.y;
 
     }
+
 }
