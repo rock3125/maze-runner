@@ -4,15 +4,6 @@ let robots = [];
 const robot_height = cell_size;
 const robot_width = cell_size / 2;
 
-// get a random direction for our robot friend
-function get_random_direction() {
-    const n = get_random_int(4);
-    if (n === 0) return "up";
-    if (n === 1) return "down";
-    if (n === 2) return "left";
-    return "right";
-}
-
 function reset_robots() {
     robots = [];
     const col_start = Math.max(Math.floor(cols / 4), 2)
@@ -27,11 +18,12 @@ function reset_robots() {
         robots.push({
             x: ((col_start + get_random_int(width)) * cell_size) + cell_size * 0.5,
             y: ((row_start + get_random_int(height)) * cell_size) + cell_size * 0.5,
-            direction: get_random_direction(),
+            tx: 0, // target x and y
+            ty: 0,
             // robot path finding
-            current_path: [],
-            choice_not_made: [],
-            dead_end: [],
+            visited: Array.from({length: rows}, () => Array(cols).fill(false)),
+            path: [],
+            stack: [],
         })
     }
 }
@@ -45,95 +37,85 @@ function draw_robots() {
 
 // have we been here before?
 function has_visited(robot, cell_x, cell_y) {
-    for (const cp of robot.current_path) {
-        if (cp.cell_x === cell_x && cp.cell_y === cell_y)
-            return true
-    }
-    return false
+    return robot.visited[cell_x][cell_y]
 }
 
-// do we want to learn this item?
-function has_seen(robot_array, cell_x, cell_y, direction) {
-    for (const cp of robot_array) {
-        if (cp.cell_x === cell_x && cp.cell_y === cell_y && cp.direction === direction)
-            return true
-    }
-    return false
+function is_valid(cell_x, cell_y) {
+    return cell_x >= 0 && cell_x < cols && cell_y >= 0 && cell_y <= rows;
 }
 
-function learn_maze(robot, cell_x, cell_y) {
-    const current_cell = maze[cell_y][cell_x];
-    const dir = robot.direction;
+// Initiates or continues DFS from the last stopped point
+function dfs(robot) {
 
-    if (dir !== "down" && !current_cell.walls.bottom && cell_y + 1 < rows &&
-        !has_seen(robot.choice_not_made, cell_x, cell_y, "down")) {
-        robot.choice_not_made.push({cell_x: cell_x, cell_y: cell_y, direction: "down"})
+    if (robot.stack.length === 0) {
+        // If stack is empty, start from the beginning or defined start point
+        let cell_x = Math.floor(robot.x / cell_size);
+        let cell_y = Math.floor(robot.y / cell_size);
+        robot.stack.push([cell_x, cell_y]); // Assuming starting point is (0, 0)
+        robot.tx = robot.x;
+        robot.ty = robot.y;
     }
 
-    if (dir !== "up" && !current_cell.walls.top && cell_y - 1 >= 0 &&
-        !has_seen(robot.choice_not_made, cell_x, cell_y, "up")) {
-        robot.choice_not_made.push({cell_x: cell_x, cell_y: cell_y, direction: "up"})
+    // move to the next position
+    if (robot.x < robot.tx) {
+        robot.x += 1
+        return false;
+    }
+    if (robot.x > robot.tx) {
+        robot.x -= 1
+        return false;
+    }
+    if (robot.y < robot.ty) {
+        robot.y += 1
+        return false;
+    }
+    if (robot.y > robot.ty) {
+        robot.y -= 1
+        return false;
     }
 
-    if (dir !== "left" && !current_cell.walls.left && cell_x - 1 >= 0 &&
-        !has_seen(robot.choice_not_made, cell_x, cell_y, "left")) {
-        robot.choice_not_made.push({cell_x: cell_x, cell_y: cell_y, direction: "left"})
+    while (robot.stack.length > 0) {
+        const [x, y] = robot.stack.pop();
+
+        robot.tx = x * cell_size + cell_size * 0.5;
+        robot.ty = y * cell_size + cell_size * 0.5;
+
+        // Skip if out of bounds or already visited
+        if (robot.visited[x][y]) {
+            continue;
+        }
+
+        // Mark robot's cell as visited
+        robot.visited[x][y] = true;
+        robot.path.push([x, y]);
+
+        // Destination reached (could be defined differently based on the maze)
+        if (x === 0 && y === 0) {
+            return true; // Return true when the destination is reached
+        }
+
+        // Push adjacent cells to stack: down, right, up, left if they are valid
+        if (is_valid_move(x, y, x + 1, y))
+            robot.stack.push([x + 1, y])
+
+        if (is_valid_move(x, y, x, y + 1))
+            robot.stack.push([x, y + 1])
+
+        if (is_valid_move(x, y, x - 1, y))
+            robot.stack.push([x - 1, y])
+
+        if (is_valid_move(x, y, x, y - 1))
+            robot.stack.push([x, y - 1])
+
+        return false;
     }
 
-    if (dir !== "right" && !current_cell.walls.right && cell_x + 1 < cols &&
-        !has_seen(robot.choice_not_made, cell_x, cell_y, "right")) {
-        robot.choice_not_made.push({cell_x: cell_x, cell_y: cell_y, direction: "right"})
-    }
+    return false; // Return false when no path leads to the destination
 }
 
 // move the bad guys
 function move_robots() {
     for (let robot of robots) {
-
-        let dx = 0;
-        let dy = 0;
-        if (robot.direction === "up") {
-            dy = -1;
-        } else if (robot.direction === "down") {
-            dy = 1;
-        } else if (robot.direction === "left") {
-            dx = -1;
-        } else if (robot.direction === "right") {
-            dx = 1;
-        }
-
-        let cell_x = Math.floor(robot.x / cell_size);
-        let cell_y = Math.floor(robot.y / cell_size);
-
-        learn_maze(robot, cell_x, cell_y)
-
-        const new_xy = move_if_possible(robot.x, robot.y, dx, dy,
-            robot_width * 0.5, robot_height * 0.5, robot_height * 0.5)
-
-        if (!has_visited(robot, cell_x, cell_y)) {
-            robot.current_path.push({cell_x: cell_x, cell_y: cell_y})
-        }
-
-        // couldn't move?
-        if (robot.x === new_xy.x && robot.y === new_xy.y) {
-            if (!has_seen(robot.dead_end, cell_x, cell_y, robot.direction))
-                robot.dead_end.push({cell_x: cell_x, cell_y: cell_y, direction: robot.direction});
-
-            // pick a new direction
-            if (!has_seen(robot.dead_end, cell_x, cell_y, "left")) {
-                robot.direction = "left";
-            } else if (!has_seen(robot.dead_end, cell_x, cell_y, "right")) {
-                robot.direction = "right";
-            } else if (!has_seen(robot.dead_end, cell_x, cell_y, "up")) {
-                robot.direction = "up";
-            } else if (!has_seen(robot.dead_end, cell_x, cell_y, "down")) {
-                robot.direction = "down";
-            }
-        }
-
-        robot.x = new_xy.x;
-        robot.y = new_xy.y;
-
+        dfs(robot)
     }
-
 }
