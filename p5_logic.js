@@ -1,7 +1,7 @@
 
 // 1080p resolution
-const w = 600;
-const h = 600;
+const w = 1000;
+const h = 1000;
 
 // maze constants
 const rows = 20;
