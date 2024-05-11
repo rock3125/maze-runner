@@ -9,7 +9,7 @@ const cols = 20;
 const cell_size = h / cols;
 const maze_color = 140;
 
-const num_robots = Math.max(Math.floor(cols / 10), 1)
+const num_robots = Math.max(Math.floor(cols / 5), 1)
 
 let game_state = "game over"; // one of {game over, running, won}
 
