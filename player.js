@@ -51,9 +51,15 @@ class Player {
         }
 
         if (dx !== 0 || dy !== 0) {
-            // set player direction
-            this.dir = { x: dx, y: dy };
+            // bullets can't go diagonal
+            let bullet_dx = dx;
+            let bullet_dy = dy;
+            if (dx !== 0 && dy !== 0) { // not both
+                bullet_dy = 0
+            }
+            this.dir = { x: bullet_dx, y: bullet_dy };
 
+            // set player direction
             const new_xy = move_if_possible(this.x, this.y, dx, dy,
                 player_width * 0.5, player_height * 0.6, player_height * 0.4)
             this.x = new_xy.x;
