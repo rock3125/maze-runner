@@ -54,6 +54,7 @@ function draw() {
     draw_maze()
     draw_player()
     draw_robots()
+    draw_bullets()
 
     if (game_state !== "running" && keyIsDown(ENTER)) {
         maze = null;
@@ -70,6 +71,7 @@ function draw() {
     if (game_state === "running") {
         player_keys()
         move_robots()
+        update_bullets()
 
     } else {
 
