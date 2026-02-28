@@ -1,6 +1,6 @@
 
 let game_state = "game over"; // one of {game over, running, won}
-let player = new Player();
+let player = null;
 
 // graphics
 let explosion_svg = null;
@@ -12,9 +12,11 @@ function get_random_int(max) {
 }
 
 function loadGraphics() {
-    player.girl_svg.push(loadImage("./graphics/girl1.svg"));
-    player.girl_svg.push(loadImage("./graphics/girl2.svg"));
-    player.girl_svg.push(loadImage("./graphics/girl3.svg"));
+    if (player) {
+        player.girl_svg.push(loadImage("./graphics/girl1.svg"));
+        player.girl_svg.push(loadImage("./graphics/girl2.svg"));
+        player.girl_svg.push(loadImage("./graphics/girl3.svg"));
+    }
     robot_svg = loadImage("./graphics/robot.svg");
     explosion_svg = loadImage("./graphics/explosion.svg")
 }
